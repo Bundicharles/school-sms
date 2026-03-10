@@ -60,7 +60,7 @@ export const AccountsPage = ({ role, selectedYear }: { role: string, selectedYea
     return `KSh ${amount.toLocaleString()}`;
   };
 
-  const fetchAccounts = async () => {
+  const fetchAccounts = React.useCallback(async () => {
     setLoading(true);
     const termStr = `Term 2, ${selectedYear}`;
     const { data: allSts } = await supabase.from('students').select('id, profile_id, class_id, profiles:profile_id(full_name, code), classes:class_id(level, name)');
@@ -68,12 +68,12 @@ export const AccountsPage = ({ role, selectedYear }: { role: string, selectedYea
     const { data: lFees } = await supabase.from('level_fees').select('*').eq('term', termStr);
 
     if (allSts) {
-      const feeLookup = (lFees || []).reduce((acc, lf) => ({ ...acc, [lf.level]: Number(lf.amount) }), {} as Record<string, number>);
-      const studentFeeLookup = (feeRecords || []).reduce((acc, f) => ({ ...acc, [f.student_id]: f }), {} as Record<string, any>);
+      const feeLookup: Record<string, number> = (lFees || []).reduce((acc, lf: any) => ({ ...acc, [lf.level]: Number(lf.amount) }), {} as Record<string, number>);
+      const studentFeeLookup: Record<string, any> = (feeRecords || []).reduce((acc, f: any) => ({ ...acc, [f.student_id]: f }), {} as Record<string, any>);
       
       setEditingFees(prev => {
         const next = { ...prev };
-        (lFees || []).forEach(lf => {
+        (lFees || []).forEach((lf: any) => {
           if (!next[lf.level]) next[lf.level] = lf.amount.toString();
         });
         return next;
@@ -101,7 +101,7 @@ export const AccountsPage = ({ role, selectedYear }: { role: string, selectedYea
     if (trxData) {
       setTransactions(trxData);
       let tInc = 0, tExp = 0;
-      trxData.forEach(t => {
+      trxData.forEach((t: any) => {
         if (t.type === 'income') tInc += Number(t.amount);
         else tExp += Number(t.amount);
       });
@@ -113,11 +113,11 @@ export const AccountsPage = ({ role, selectedYear }: { role: string, selectedYea
     if (docData) setDocuments(docData);
 
     setLoading(false);
-  };
+  }, [selectedYear, supabase]);
 
   useEffect(() => {
     fetchAccounts();
-  }, [selectedYear]);
+  }, [fetchAccounts]);
 
   const handleRecordPayment = async () => {
     if (!adm || !amount) return alert("Enter ADM and Amount.");

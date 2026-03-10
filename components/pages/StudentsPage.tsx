@@ -23,7 +23,7 @@ export const StudentsPage = ({ role, code, selectedYear, onSelectStudent }: { ro
   const [dbClasses, setDbClasses] = useState<any[]>([]); // {id, name}
   const supabase = createClient();
 
-  const fetchClasses = async () => {
+  const fetchClasses = React.useCallback(async () => {
     const { data } = await supabase.from('classes').select('id, name');
     if (data) {
       setDbClasses(data);
@@ -31,12 +31,12 @@ export const StudentsPage = ({ role, code, selectedYear, onSelectStudent }: { ro
         setNewClassId(data[0].id);
       }
     }
-  };
+  }, [supabase, newClassId]);
 
   // Fetch students on mount
-  const fetchStudents = async () => {
+  const fetchStudents = React.useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('students')
       .select(`
         id,
@@ -60,12 +60,12 @@ export const StudentsPage = ({ role, code, selectedYear, onSelectStudent }: { ro
       setStudents(mapped);
     }
     setLoading(false);
-  };
+  }, [supabase]);
 
   useEffect(() => {
     fetchStudents();
     fetchClasses();
-  }, [selectedYear]);
+  }, [selectedYear, fetchStudents, fetchClasses]);
 
   const handleAddStudent = async () => {
     if (!newAdm || !newName || !newClassId) {

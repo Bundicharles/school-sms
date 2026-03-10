@@ -29,7 +29,10 @@ export const GlobalAnnouncements = ({ role }: { role?: string }) => {
   }, [supabase]);
 
   useEffect(() => {
-    fetchAnnouncements();
+    const init = async () => {
+      await fetchAnnouncements();
+    };
+    init();
     
     // Subscribe to new announcements
     const channel = supabase

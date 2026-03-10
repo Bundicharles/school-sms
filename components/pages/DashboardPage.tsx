@@ -33,6 +33,7 @@ export const DashboardPage = ({
     school_name: "KENYA HIGH SCHOOL",
     school_address: "P.O. Box 1234 - 00100, Nairobi",
     school_phone: "+254 700 000 000",
+    school_email: "info@kenyahigh.ac.ke",
     school_motto: "Where Excellence is a Tradition",
     school_logo_url: ""
   });
@@ -48,14 +49,14 @@ export const DashboardPage = ({
   const supabase = createClient();
 
   // Helper to fetch Announcements
-  const fetchAnnouncements = async () => {
+  const fetchAnnouncements = React.useCallback(async () => {
     const { data } = await supabase
       .from('announcements')
       .select('id, title, body, date, priority')
       .order('date', { ascending: false })
       .limit(5);
     if (data) setAnnouncements(data);
-  };
+  }, [supabase]);
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -133,7 +134,7 @@ export const DashboardPage = ({
         .from('duty_roster')
         .select('shift, profiles(full_name, code)')
         .eq('duty_date', todayStr);
-      if (dutyData) setTeachersOnDuty(dutyData);
+      if (dutyData) setTeachersOnDuty(dutyData as any[]);
 
       // Fetch School Settings
       const { data: settings } = await supabase.from('school_settings')
@@ -144,7 +145,7 @@ export const DashboardPage = ({
     };
 
     fetchDashboard();
-  }, [supabase, selectedYear]);
+  }, [supabase, selectedYear, fetchAnnouncements]);
 
   const handleAddAnnouncement = async () => {
     if (!newAnnTitle.trim() || !newAnnBody.trim()) {
