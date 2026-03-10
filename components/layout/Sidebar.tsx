@@ -41,7 +41,7 @@ export const Sidebar = ({
         {!isCollapsed && (
           <>
             <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontWeight: 700, color: "#fff", lineHeight: 1.3 }}>{schoolName || "Kenya High School"}</div>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,.5)", marginTop: 2, fontFamily: "'IBM Plex Mono', monospace" }}>SMS v2.1 · CBC Ready</div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,.5)", marginTop: 2, fontFamily: "'IBM Plex Mono', monospace" }}>SMS v2.1 · CBE Ready</div>
           </>
         )}
       </div>

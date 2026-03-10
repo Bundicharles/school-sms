@@ -5,6 +5,7 @@ import { COLORS } from "@/lib/constants";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { useAuth, SignIn } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 // Pages
 import { LoginPage } from "@/components/pages/LoginPage";
@@ -124,6 +125,12 @@ export default function App() {
     setActivePage("dashboard");
   };
 
+  useEffect(() => {
+    if (!loading && isLoaded && !user && !isSignedIn) {
+      redirect("/sign-in");
+    }
+  }, [loading, isLoaded, user, isSignedIn]);
+
   if (loading || !isLoaded) {
     return (
       <div style={{ 
@@ -141,13 +148,10 @@ export default function App() {
   }
 
   if (!user) {
-    if (!isSignedIn) {
-      return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", background: COLORS.paper }}>
-          <SignIn routing="hash" />
-        </div>
-      );
-    }
+    // If not signed in, the useEffect above will trigger a redirect.
+    // Return null while redirecting to avoid flashing content or errors.
+    if (!isSignedIn) return null;
+    
     return <LoginPage onLogin={handleLogin} />;
   }
 
@@ -232,7 +236,17 @@ export default function App() {
                 selectedYear={selectedYear}
               />
             )}
-            {activePage === "students" && <StudentsPage role={user.role} code={user.code} selectedYear={selectedYear} />}
+            {activePage === "students" && (
+              <StudentsPage 
+                role={user.role} 
+                code={user.code} 
+                selectedYear={selectedYear} 
+                onSelectStudent={(id, adm) => { 
+                  setSelectedStudentId(id); 
+                  setActivePage("student-detail"); 
+                }}
+              />
+            )}
             {activePage === "results" && (
               <ResultsPage 
                 role={user.role} 

@@ -6,7 +6,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Badge } from "@/components/ui/Badge";
 import { createClient } from "@/utils/supabase/client";
 
-export const StudentsPage = ({ role, code, selectedYear }: { role: string; code: string; selectedYear: string }) => {
+export const StudentsPage = ({ role, code, selectedYear, onSelectStudent }: { role: string; code: string; selectedYear: string; onSelectStudent?: (id: string, adm: string) => void }) => {
   const [search, setSearch] = useState("");
   const [selectedClass, setSelectedClass] = useState("All");
   const [students, setStudents] = useState<any[]>([]);
@@ -338,8 +338,14 @@ export const StudentsPage = ({ role, code, selectedYear }: { role: string; code:
       </div>
 
       {selectedStudent && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: 20 }}>
-          <div style={{ background: "#fff", borderRadius: 20, width: "100%", maxWidth: 600, maxHeight: "90vh", overflow: "auto", boxShadow: "0 10px 40px rgba(0,0,0,0.2)", position: "relative" }}>
+        <div 
+          onClick={() => setSelectedStudent(null)}
+          style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: 20 }}
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()} 
+            style={{ background: "#fff", borderRadius: 20, width: "100%", maxWidth: 600, maxHeight: "90vh", overflow: "auto", boxShadow: "0 10px 40px rgba(0,0,0,0.2)", position: "relative" }}
+          >
             {/* Header */}
             <div style={{ padding: 24, background: COLORS.forest, color: "#fff", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -351,8 +357,8 @@ export const StudentsPage = ({ role, code, selectedYear }: { role: string; code:
                    <div style={{ fontSize: 12, opacity: 0.8, fontFamily: "monospace" }}>{selectedStudent.adm} • {selectedStudent.class}</div>
                 </div>
               </div>
-              <button onClick={() => setSelectedStudent(null)} style={{ background: "transparent", border: "none", cursor: "pointer", padding: 8 }}>
-                 <Icon name="close" size={24} color="#fff" />
+              <button onClick={() => setSelectedStudent(null)} style={{ background: "rgba(255,255,255,0.2)", borderRadius: '50%', border: "none", cursor: "pointer", padding: 8, display: 'flex' }}>
+                 <Icon name="close" size={20} color="#fff" />
               </button>
             </div>
 
@@ -364,7 +370,7 @@ export const StudentsPage = ({ role, code, selectedYear }: { role: string; code:
                    <Badge type={selectedStudent.status === 'active' ? 'success' : 'danger'}>{selectedStudent.status.toUpperCase()}</Badge>
                  </div>
                  {selectedStudent.status_reason && (
-                   <div style={{ textAlign: "right" }}>
+                   <div style={{ textAlign: "right", maxWidth: "60%" }}>
                      <div style={{ fontSize: 11, fontWeight: 800, color: COLORS.muted, textTransform: "uppercase", marginBottom: 4 }}>Reason</div>
                      <div style={{ fontSize: 13, fontWeight: 600, color: COLORS.charcoal }}>{selectedStudent.status_reason}</div>
                    </div>
@@ -392,7 +398,14 @@ export const StudentsPage = ({ role, code, selectedYear }: { role: string; code:
               {/* Action Buttons */}
               {role === 'admin' && (
                 <div style={{ marginTop: 10, display: "flex", gap: 10, borderTop: "1px solid #EEE", paddingTop: 20 }}>
-                   <button style={{ flex: 1, padding: 12, borderRadius: 10, border: "1px solid #E5E7EB", fontWeight: 700, fontSize: 13, cursor: "pointer", background: "#fff" }}>Edit Profile</button>
+                   <button 
+                     onClick={() => { if(onSelectStudent) onSelectStudent(selectedStudent.id, selectedStudent.adm); }} 
+                     style={{ flex: 1, padding: 12, borderRadius: 10, border: "1px solid #E5E7EB", fontWeight: 700, fontSize: 13, cursor: "pointer", background: "#fff", transition: "all 0.2s" }}
+                     onMouseEnter={e => e.currentTarget.style.background = COLORS.cream}
+                     onMouseLeave={e => e.currentTarget.style.background = "#fff"}
+                   >
+                     Edit Profile
+                   </button>
                    <button onClick={() => window.print()} style={{ flex: 1, padding: 12, borderRadius: 10, border: "none", background: COLORS.forest, color: "#fff", fontWeight: 700, fontSize: 13, cursor: "pointer" }}>Print Records</button>
                 </div>
               )}
