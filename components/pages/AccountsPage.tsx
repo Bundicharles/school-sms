@@ -477,9 +477,10 @@ export const AccountsPage = ({ role, selectedYear }: { role: string, selectedYea
       {/* TAB: TRANSACTIONS PORTAL */}
       {activeTab === "transactions" && (
         <div className="no-print" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          <div style={{ background: "#fff", borderRadius: 16, padding: 24, boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)", borderTop: `4px solid ${trxType === 'income' ? "#22C55E" : COLORS.red}` }}>
-            <SectionHeader title="💸 Post New Transaction" />
-            <div style={{ display: "flex", gap: 12, marginBottom: 20, marginTop: 10 }}>
+          {role === 'accounts' && (
+            <div style={{ background: "#fff", borderRadius: 16, padding: 24, boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)", borderTop: `4px solid ${trxType === 'income' ? "#22C55E" : COLORS.red}` }}>
+              <SectionHeader title="💸 Post New Transaction" />
+              <div style={{ display: "flex", gap: 12, marginBottom: 20, marginTop: 10 }}>
                <button onClick={()=>setTrxType("income")} style={{ flex: 1, padding: "12px", borderRadius: 10, fontWeight: 800, fontSize: 14, border: `2px solid ${trxType === 'income' ? '#22C55E' : '#E5E7EB'}`, background: trxType === 'income' ? '#F0FDF4' : '#fff', color: trxType === 'income' ? '#166534' : COLORS.muted, cursor: "pointer" }}>INCOME</button>
                <button onClick={()=>setTrxType("expense")} style={{ flex: 1, padding: "12px", borderRadius: 10, fontWeight: 800, fontSize: 14, border: `2px solid ${trxType === 'expense' ? COLORS.red : '#E5E7EB'}`, background: trxType === 'expense' ? '#FEF2F2' : '#fff', color: trxType === 'expense' ? '#991B1B' : COLORS.muted, cursor: "pointer" }}>EXPENSE</button>
             </div>
@@ -517,6 +518,7 @@ export const AccountsPage = ({ role, selectedYear }: { role: string, selectedYea
               Record {trxType.toUpperCase()}
             </button>
           </div>
+          )}
 
           {/* Full Ledger Table */}
           <div style={{ background: "#fff", borderRadius: 16, padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", boxShadow: "0 1px 3px rgba(0,0,0,.08)" }}>
@@ -552,7 +554,7 @@ export const AccountsPage = ({ role, selectedYear }: { role: string, selectedYea
       {/* TAB: STUDENT FEES CONTROL */}
       {activeTab === "fees" && (
         <div className="no-print" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          {["accounts", "admin", "principal", "deputy"].includes(role) && (
+          {role === 'accounts' && (
             <div style={{ background: "#fff", borderRadius: 16, padding: 24, boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)" }}>
               <SectionHeader title="💳 Log Direct Tuition Payment" />
               <p style={{ fontSize: 12, color: COLORS.muted, marginBottom: 16 }}>* Payments logged here auto-generate Income entries on the Master Ledger.</p>
@@ -614,7 +616,7 @@ export const AccountsPage = ({ role, selectedYear }: { role: string, selectedYea
             </div>
           </div>
 
-          {["accounts", "admin"].includes(role) && (
+          {role === 'accounts' && (
             <div style={{ background: "#fff", borderRadius: 16, padding: 24, boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)" }}>
               <SectionHeader title="⚙️ Fee Structure Settings" />
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20, marginTop: 16 }}>
@@ -731,7 +733,7 @@ export const AccountsPage = ({ role, selectedYear }: { role: string, selectedYea
              <p style={{ fontSize: 13, color: COLORS.muted, marginBottom: 20 }}>Upload, store, and manage important financial documents like receipts, invoices, and bank statements.</p>
              
              {/* Upload Form */}
-             {["accounts", "admin"].includes(role) && (
+             {role === 'accounts' && (
                <div style={{ background: COLORS.paper, padding: 20, borderRadius: 14, marginBottom: 24, border: "1px dashed #D1D5DB" }}>
                  <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "flex-end" }}>
                     <div style={{ flex: 1, minWidth: 200 }}>
@@ -778,7 +780,7 @@ export const AccountsPage = ({ role, selectedYear }: { role: string, selectedYea
                      <a href={d.file_url} target="_blank" rel="noopener noreferrer" style={{ flex: 1, textAlign: "center", background: "#F0FDF4", color: "#166534", textDecoration: "none", padding: "8px", borderRadius: 8, fontSize: 12, fontWeight: 700 }}>
                        Open File
                      </a>
-                     {role === 'admin' && (
+                     {role === 'accounts' && (
                        <button onClick={() => handleDeleteDocument(d.id, d.file_url)} style={{ background: "#FEF2F2", color: COLORS.red, border: "none", padding: "8px 12px", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
                          Delete
                        </button>
