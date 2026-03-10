@@ -1,5 +1,5 @@
 {
-  "name": "kenya-school-sms",
+  "name": "clerk-nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,12 +10,9 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^7.0.2",
-    "@supabase/ssr": "^0.9.0",
-    "@supabase/supabase-js": "^2.98.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "recharts": "^3.7.0"
+    "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
