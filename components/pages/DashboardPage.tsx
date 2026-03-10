@@ -514,6 +514,15 @@ export const DashboardPage = ({
               />
             </div>
             <div>
+              <label style={{ fontSize: 11, fontWeight: 800, color: COLORS.muted, textTransform: "uppercase", display: "block", marginBottom: 6 }}>School Motto</label>
+              <input
+                value={schoolSettings.school_motto || ""}
+                onChange={e => setSchoolSettings({ ...schoolSettings, school_motto: e.target.value })}
+                placeholder="Where Excellence is a Tradition"
+                style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }}
+              />
+            </div>
+            <div>
               <label style={{ fontSize: 11, fontWeight: 800, color: COLORS.muted, textTransform: "uppercase", display: "block", marginBottom: 6 }}>Address</label>
               <input
                 value={schoolSettings.school_address}
@@ -526,6 +535,15 @@ export const DashboardPage = ({
               <input
                 value={schoolSettings.school_phone}
                 onChange={e => setSchoolSettings({ ...schoolSettings, school_phone: e.target.value })}
+                style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }}
+              />
+            </div>
+            <div>
+              <label style={{ fontSize: 11, fontWeight: 800, color: COLORS.muted, textTransform: "uppercase", display: "block", marginBottom: 6 }}>School Email</label>
+              <input
+                value={schoolSettings.school_email || ""}
+                onChange={e => setSchoolSettings({ ...schoolSettings, school_email: e.target.value })}
+                placeholder="info@school.ac.ke"
                 style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }}
               />
             </div>
